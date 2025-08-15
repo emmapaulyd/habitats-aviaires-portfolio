@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitats Aviaires - Analyse Écologique</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest-dark: #2D4A2B;
+            --forest-medium: #4A7B47;
+            --forest-light: #6B9E68;
+            --brown-dark: #5D4037;
+            --brown-medium: #8D6E63;
+            --brown-light: #A1887F;
+            --cream: #F5F5DC;
+            --text-light: #FAFAFA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            line-height: 1.6;
+            color: var(--forest-dark);
+            background: linear-gradient(135deg, var(--cream) 0%, #E8E8D0 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--forest-dark) 0%, var(--brown-dark) 100%);
+            color: var(--text-light);
+            padding: 60px 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: white;
+            margin: 40px 0;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--forest-dark);
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid var(--forest-medium);
+            padding-bottom: 15px;
+        }
+
+        .section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--forest-medium);
+            margin: 25px 0 15px 0;
+        }
+
+        .species-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .species-card {
+            background: var(--cream);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--forest-medium);
+        }
+
+        .species-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .species-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--forest-dark);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .species-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--brown-medium);
+        }
+
+        .prevalence {
+            background: var(--forest-light);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+
+        .variables-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .variable-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.85rem;
+        }
+
+        .variable-name {
+            font-weight: 600;
+            color: var(--forest-dark);
+        }
+
+        .effect-positive {
+            background: linear-gradient(45deg, #4CAF50, #66BB6A);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .effect-negative {
+            background: linear-gradient(45deg, #F44336, #EF5350);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .habitat-description {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid var(--forest-medium);
+            font-style: italic;
+            color: var(--forest-dark);
+            font-size: 0.9rem;
+        }
+
+        .ecological-group {
+            background: var(--cream);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            border-left: 5px solid var(--forest-medium);
+        }
+
+        .group-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--forest-dark);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .group-species {
+            color: var(--brown-dark);
+            font-weight: 500;
+            line-height: 1.8;
+        }
+
+        .key-variables {
+            background: var(--forest-light);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .key-variables h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .variables-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .variable-category {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .category-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .search-container {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            border: 2px solid var(--forest-light);
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--forest-dark);
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            background: var(--brown-light);
+            color: var(--forest-dark);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--forest-medium);
+            color: white;
+        }
+
+        footer {
+            background: var(--forest-dark);
+            color: var(--text-light);
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 60px;
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--forest-medium);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            background: var(--forest-dark);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .species-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .species-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Habitats Aviaires</h1>
+            <p class="subtitle">Analyse écologique multi-espèces par modélisation LiDAR et variables paysagères</p>
+            <p style="margin-top: 15px; font-size: 1rem; opacity: 0.8;">Par Emma Pauly - Université de Gembloux Agro-Bio Tech</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- INTRODUCTION -->
+        <section class="section">
+            <h2>Contexte de l'étude</h2>
+            <p style="margin-bottom: 15px;">Cette analyse présente les résultats d'une modélisation multi-espèces réalisée sur 63 espèces d'oiseaux, utilisant des données LiDAR et des variables paysagères pour caractériser leurs préférences d'habitat.</p>
+            
+            <h3>Méthodologie</h3>
+            <ul style="margin-left: 20px; margin-bottom: 20px;">
+                <li><strong>Variables LiDAR :</strong> Structure forestière 3D, densité foliaire, complexité verticale</li>
+                <li><strong>Variables paysagères :</strong> Couvertures d'habitat, fragmentation, indices d'anthropisation</li>
+                <li><strong>Variables de diversité :</strong> Composition spécifique, dominance des essences</li>
+                <li><strong>Modélisation :</strong> Sélection de variables par VSURF, validation croisée spatiale</li>
+            </ul>
+
+            <h3>Objectifs</h3>
+            <p>Identifier les variables environnementales les plus importantes pour caractériser les habitats préférentiels de chaque espèce et dégager des groupes écologiques cohérents.</p>
+        </section>
+
+        <!-- ESPÈCES -->
+        <section class="section">
+            <h2>Analyse par espèces</h2>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Rechercher une espèce..." onkeyup="searchSpecies(this.value)">
+            </div>
+
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterByPrevalence('all')">Toutes</button>
+                <button class="filter-btn" onclick="filterByPrevalence('common')">Communes</button>
+                <button class="filter-btn" onclick="filterByPrevalence('rare')">Rares</button>
+                <button class="filter-btn" onclick="filterByPrevalence('very-rare')">Très rares</button>
+            </div>
+
+            <div class="species-grid" id="species-grid">
+                <!-- Species cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- SYNTHÈSE -->
+        <section class="section">
+            <h2>Synthèse écologique</h2>
+            
+            <div class="ecological-group">
+                <div class="group-title">1. ESPÈCES FORESTIÈRES SPÉCIALISTES</div>
+                <div class="group-species">
+                    <strong>Chênaies matures :</strong> Sittelle torchepot, Pic épeiche, Grimpereau des jardins<br>
+                    <strong>Résineux denses :</strong> Mésange noire, Roitelet huppé, Mésange huppée<br>
+                    <strong>Grandes forêts naturelles :</strong> Pic noir
+                </div>
+            </div>
+
+            <div class="ecological-group">
+                <div class="group-title">2. ESPÈCES FORESTIÈRES GÉNÉRALISTES</div>
+                <div class="group-species">
+                    Fauvette à tête noire, Pouillot véloce, Troglodyte mignon, Rouge-gorge, Grive musicienne, Geai des chênes<br>
+                    <em>Caractérisées par leur adaptation aux forêts avec structure complexe</em>
+                </div>
+            </div>
+
+            <div class="ecological-group">
+                <div class="group-title">3. ESPÈCES DE LISIÈRES ET SEMI-OUVERTES</div>
+                <div class="group-species">
+                    Mésange charbonnière, Mésange bleue (chênaies périurbaines)<br>
+                    Pouillot siffleur (forêts avec strate moyenne développée)
+                </div>
+            </div>
+
+            <div class="ecological-group">
+                <div class="group-title">4. ESPÈCES AGRICOLES ET PRAIRIALES</div>
+                <div class="group-species">
+                    Corneille noire, Étourneau sansonnet, Alouette des champs, Bruant jaune, Chardonneret élégant, Linotte mélodieuse<br>
+                    <em>Favorisent les mosaïques agricoles et évitent les zones forestières</em>
+                </div>
+            </div>
+
+            <div class="ecological-group">
+                <div class="group-title">5. ESPÈCES URBAINES ET ANTHROPOPHILES</div>
+                <div class="group-species">
+                    Pigeon ramier, Pie bavarde, Moineau domestique, Martinet noir, Hirondelle de fenêtre<br>
+                    <em>Adaptées aux environnements anthropisés et fragmentés</em>
+                </div>
+            </div>
+
+            <div class="ecological-group">
+                <div class="group-title">6. ESPÈCES D'HABITATS SPÉCIALISÉS</div>
+                <div class="group-species">
+                    <strong>Zones humides :</strong> Canard colvert, Héron cendré<br>
+                    <strong>Agriculture intensive :</strong> Vanneau huppé<br>
+                    <strong>Milieux ouverts avec perchoirs :</strong> Faucon crécerelle
+                </div>
+            </div>
+
+            <div class="key-variables">
+                <h3>Variables clés pour la caractérisation</h3>
+                <div class="variables-categories">
+                    <div class="variable-category">
+                        <div class="category-title">Structure forestière</div>
+                        <div>Couverture canopéenne, strates verticales, densité foliaire, complexité structurelle</div>
+                    </div>
+                    <div class="variable-category">
+                        <div class="category-title">Composition</div>
+                        <div>Diversité des essences, espèces dominantes, indices de diversité</div>
+                    </div>
+                    <div class="variable-category">
+                        <div class="category-title">Anthropisation</div>
+                        <div>Indices d'artificialisation, pression urbaine, couverture résidentielle</div>
+                    </div>
+                    <div class="variable-category">
+                        <div class="category-title">Paysage</div>
+                        <div>Mosaïques agricoles, fragmentation, densité de lisières</div>
+                    </div>
+                    <div class="variable-category">
+                        <div class="category-title">Topographie</div>
+                        <div>Complexité du relief, variabilité des hauteurs, indices de forme</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button class="scroll-to-top" onclick="scrollToTop()">↑</button>
+
+    <footer>
+        <div class="container">
+            <p>Analyse écologique des habitats aviaires - Modélisation multi-espèces 2025</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Emma Pauly - Université de Gembloux Agro-Bio Tech</p>
+        </div>
+    </footer>
+
+    <script>
+        // Species data
+        const speciesData = [
+            {
+                name: "Pigeon ramier",
+                prevalence: "84.3% (Commun)",
+                variables: 27,
+                auc: 0.596,
+                category: "common",
+                topVariables: [
+                    {name: "Indice_Artificialisation", effect: "positive", delta: 0.137},
+                    {name: "Indice_Pression_Urbaine", effect: "positive", delta: 0.122},
+                    {name: "Couverture_Anthropique_Total", effect: "positive", delta: 0.118},
+                    {name: "Fragmentation_Totale", effect: "positive", delta: 0.112},
+                    {name: "Couverture_Residentiel_Totale", effect: "positive", delta: 0.111}
+                ],
+                habitat: "Espèce urbaine et périurbaine, adaptée aux environnements anthropisés et fragmentés."
+            },
+            {
+                name: "Fauvette à tête noire",
+                prevalence: "87.9% (Commun)",
+                variables: 21,
+                auc: 0.595,
+                category: "common",
+                topVariables: [
+                    {name: "Rumple_Index", effect: "positive", delta: 0.103},
+                    {name: "Gap_Fraction_Ratio", effect: "negative", delta: -0.092},
+                    {name: "Canopy_Cover_Midstory_pct", effect: "positive", delta: 0.076},
+                    {name: "CHM_Height_StdDev_m", effect: "positive", delta: 0.076},
+                    {name: "Autres", effect: "positive", delta: 0.073}
+                ],
+                habitat: "Forêts avec structure verticale complexe, strates moyennes développées et relief varié."
+            },
+            {
+                name: "Pouillot véloce",
+                prevalence: "80.9% (Commun)",
+                variables: 18,
+                auc: 0.627,
+                category: "common",
+                topVariables: [
+                    {name: "LAD_Mean", effect: "positive", delta: 0.195},
+                    {name: "Indice_Forme_Paysage", effect: "positive", delta: 0.191},
+                    {name: "Return_Density_Understory_per_m2", effect: "positive", delta: 0.187},
+                    {name: "LAD_Max", effect: "positive", delta: 0.179},
+                    {name: "LAD_SD", effect: "positive", delta: 0.179}
+                ],
+                habitat: "Forêts denses avec sous-bois bien développé et structure foliaire complexe."
+            },
+            {
+                name: "Corneille noire",
+                prevalence: "67.8% (Commun)",
+                variables: 29,
+                auc: 0.737,
+                category: "common",
+                topVariables: [
+                    {name: "Indice_Mosaique_Agricole", effect: "positive", delta: 0.523},
+                    {name: "Couverture_Agriculture_Totale", effect: "positive", delta: 0.415},
+                    {name: "Couverture_Naturelle_Totale", effect: "negative", delta: -0.41},
+                    {name: "Indice_Naturalite", effect: "negative", delta: -0.41},
+                    {name: "Couverture_Agriculture_Intensive", effect: "positive", delta: 0.392}
+                ],
+                habitat: "Espèce anthropophile des milieux agricoles, évitant les zones naturelles."
+            },
+            {
+                name: "Mésange charbonnière",
+                prevalence: "76.7% (Commun)",
+                variables: 6,
+                auc: 0.680,
+                category: "common",
+                topVariables: [
+                    {name: "Chenes", effect: "positive", delta: 0.294},
+                    {name: "Pourcentage_Essence_Dominante", effect: "positive", delta: 0.202},
+                    {name: "Canopy_Cover_Midstory_pct", effect: "positive", delta: 0.198},
+                    {name: "Fractal_Dimension_Canopy", effect: "negative", delta: -0.134},
+                    {name: "Epiceas", effect: "negative", delta: -0.085}
+                ],
+                habitat: "Forêts de feuillus, particulièrement chênaies, avec strate moyenne développée."
+            },
+            {
+                name: "Troglodyte mignon",
+                prevalence: "74.4% (Commun)",
+                variables: 27,
+                auc: 0.746,
+                category: "common",
+                topVariables: [
+                    {name: "Canopy_Cover_Canopy_pct", effect: "positive", delta: 0.393},
+                    {name: "CHM_Height_StdDev_m", effect: "positive", delta: 0.389},
+                    {name: "Pourcentage_Essence_Dominante", effect: "positive", delta: 0.366},
+                    {name: "Return_Density_Canopy_per_m2", effect: "positive", delta: 0.366},
+                    {name: "LiDAR_Penetration_Ratio", effect: "negative", delta: -0.351}
+                ],
+                habitat: "Forêts denses à canopée fermée avec forte hétérogénéité structurelle."
+            },
+            {
+                name: "Rouge-gorge",
+                prevalence: "69.3% (Commun)",
+                variables: 8,
+                auc: 0.783,
+                category: "common",
+                topVariables: [
+                    {name: "CHM_Height_StdDev_m", effect: "positive", delta: 0.588},
+                    {name: "Canopy_Cover_Midstory_pct", effect: "positive", delta: 0.573},
+                    {name: "LiDAR_Penetration_Ratio", effect: "negative", delta: -0.565},
+                    {name: "Pourcentage_Essence_Dominante", effect: "positive", delta: 0.553},
+                    {name: "Return_Density_Canopy_per_m2", effect: "positive", delta: 0.546}
+                ],
+                habitat: "Forêts à structure verticale complexe avec strate moyenne bien développée et canopée fermée."
+            },
+            {
+                name: "Grive musicienne",
+                prevalence: "63.5% (Commun)",
+                variables: 17,
+                auc: 0.553,
+                category: "common",
+                topVariables: [
+                    {name: "Couverture_Foret_Sylviculture", effect: "positive", delta: 0.256},
+                    {name: "Couverture_Forestiere_Totale", effect: "positive", delta: 0.252},
+                    {name: "Indice_Habitat_Forestier", effect: "positive", delta: 0.252},
+                    {name: "Non.ligneux", effect: "negative", delta: -0.24},
+                    {name: "Rumple_Index", effect: "positive", delta: 0.237}
+                ],
+                habitat: "Forêts gérées avec relief complexe, évitant les milieux ouverts."
+            },
+            {
+                name: "Mésange bleue",
+                prevalence: "56.6% (Commun)",
+                variables: 13,
+                auc: 0.695,
+                category: "common",
+                topVariables: [
+                    {name: "Chenes", effect: "positive", delta: 0.473},
+                    {name: "CHM_Height_StdDev_m", effect: "positive", delta: 0.302},
+                    {name: "Couverture_Anthropique_Total", effect: "positive", delta: 0.271},
+                    {name: "Indice_Pression_Urbaine", effect: "positive", delta: 0.263},
+                    {name: "Pourcentage_Essence_Dominante", effect: "positive", delta: 0.26}
+                ],
+                habitat: "Chênaies périurbaines avec structure hétérogène."
+            },
+            {
+                name: "Geai des chênes",
+                prevalence: "46% (Commun)",
+                variables: 40,
+                auc: 0.598,
+                category: "common",
+                topVariables: [
+                    {name: "Pourcentage_Essence_Dominante", effect: "positive", delta: 0.351},
+                    {name: "Return_Density_Canopy_per_m2", effect: "positive", delta: 0.336},
+                    {name: "Height_Median_Energy_m", effect: "positive", delta: 0.309},
+                    {name: "Canopy_Cover_Canopy_pct", effect: "positive", delta: 0.309},
+                    {name: "Canopy_Cover_Midstory_pct", effect: "positive", delta: 0.309}
+                ],
+                habitat: "Forêts denses à plusieurs strates avec peuplements homogènes dominants."
+            },
+            {
+                name: "Pic épeiche",
+                prevalence: "44% (Commun)",
+                variables: 11,
+                auc: 0.740,
+                category: "common",
+                topVariables: [
+                    {name: "Canopy_Cover_Canopy_pct", effect: "positive", delta: 0.5},
+                    {name: "Chenes", effect: "positive", delta: 0.485},
+                    {name: "CHM_Height_StdDev_m", effect: "positive", delta: 0.477},
+                    {name: "Fractal_Dimension_Canopy", effect: "negative", delta: -0.45},
+                    {name: "Pourcentage_Essence_Dominante", effect: "positive", delta: 0.412}
+                ],
+                habitat: "Chênaies matures à canopée fermée avec structure simple mais hétérogène en hauteur."
+            },
+            {
+                name: "Sittelle torchepot",
+                prevalence: "33.6% (Commun)",
+                variables: 17,
+                auc: 0.845,
+                category: "common",
+                topVariables: [
+                    {name: "Canopy_Cover_Canopy_pct", effect: "positive", delta: 0.672},
+                    {name: "CHM_Height_StdDev_m", effect: "positive", delta: 0.653},
+                    {name: "Hauteur_Moyenne", effect: "positive", delta: 0.607},
+                    {name: "Height_Median_Energy_m", effect: "positive", delta: 0.599},
+                    {name: "Chenes", effect: "positive", delta: 0.588}
+                ],
+                habitat: "Forêts matures de feuillus (chênes) avec canopée fermée et structure complexe."
+            },
+            {
+                name: "Accenteur mouchet",
+                prevalence: "35.5% (Commun)",
+                variables: 17,
+                auc: 0.648,
+                category: "common",
+                topVariables: [
+                    {name: "CHM_Height_CoeffVar_pct", effect: "positive", delta: 0.336},
+                    {name: "Non.ligneux", effect: "positive", delta: 0.313},
+                    {name: "Indice_Mosaique_Agricole", effect: "positive", delta: 0.305},
+                    {name: "Pourcentage_Essence_Dominante", effect: "negative", delta: -0.294},
+                    {name: "Rumple_Index", effect: "negative", delta: -0.294}
+                ],
+                habitat: "Milieux semi-ouverts et mosaïques agricoles avec végétation hétérogène."
+            },
+            {
+                name: "Étourneau sansonnet",
+                prevalence: "29.5% (Commun)",
+                variables: 19,
+                auc: 0.805,
+                category: "common",
+                topVariables: [
+                    {name: "Couverture_Prairie", effect: "positive", delta: 0.516},
+                    {name: "Indice_Mosaique_Agricole", effect: "positive", delta: 0.489},
+                    {name: "Forest_Edge_Density_per_m2", effect: "negative", delta: -0.481},
+                    {name: "Non.ligneux", effect: "positive", delta: 0.466},
+                    {name: "Rumple_Index", effect: "negative", delta: -0.466}
+                ],
+                habitat: "Milieux prairiaux et agricoles ouverts, évitant les zones forestières."
+            },
+            {
+                name: "Fauvette grisette",
+                prevalence: "29.2% (Commun)",
+                variables: 38,
+                auc: 0.742,
+                category: "common",
+                topVariables: [
+                    {name: "Forest_Edge_Density_per_m2", effect: "negative", delta: -0.496},
+                    {name: "Canopy_Cover_Canopy_pct", effect: "negative", delta: -0.481},
+                    {name: "Rumple_Index", effect: "negative", delta: -0.473},
+                    {name: "Pourcentage_Essence_Dominante", effect: "negative", delta: -0.454},
+                    {name: "Non.ligneux", effect: "positive", delta: 0.454}
+                ],
+                habitat: "Milieux ouverts avec végétation arbustive, évitant les forêts denses."
+            },
+            {
+                name: "Grimpereau des jardins",
+                prevalence: "31.2% (Commun)",
+                variables: 17,
+                auc: 0.732,
+                category: "common",
+                topVariables: [
+                    {name: "Chenes", effect: "positive", delta: 0.477},
+                    {name: "Canopy_Cover_Canopy_pct", effect: "positive", delta: 0.424},
+                    {name: "CHM_Height_StdDev_m", effect: "positive", delta: 0.42},
+                    {name: "Pourcentage_Essence_Dominante", effect: "positive", delta: 0.416},
+                    {name: "Height_Median_Energy_m", effect: "positive", delta: 0.405}
+                ],
+                habitat: "Chênaies matures à canopée fermée avec structure verticale hétérogène."
+            },
+            {
+                name: "Pie bavarde",
+                prevalence: "23.3% (Commun)",
+                variables: 7,
+                auc: 0.863,
+                category: "common",
+                topVariables: [
+                    {name: "Indice_Artificialisation", effect: "positive", delta: 0.477},
+                    {name: "Fragmentation_Totale", effect: "positive", delta: 0.47},
+                    {name: "Couverture_Residentiel_Totale", effect: "positive", delta: 0.447},
+                    {name: "Indice_Mosaique_Agricole", effect: "positive", delta: 0.382},
+                    {name: "Rumple_Index", effect: "negative", delta: -0.366}
+                ],
+                habitat: "Milieux anthropisés, résidentiels et agricoles fragmentés."
+            },
+            {
+                name: "Buse variable",
+                prevalence: "27.9% (Commun)",
+                variables: 12,
+                auc: 0.612,
+                category: "common",
+                topVariables: [
+                    {name: "Forest_Edge_Density_per_m2", effect: "negative", delta: -0.282},
+                    {name: "Indice_Forme_Paysage", effect: "negative", delta: -0.279},
+                    {name: "Indice_Agregation_Paysage", effect: "positive", delta: 0.252},
+                    {name: "Indice_Mosaique_Agricole", effect: "positive", delta: 0.244},
+                    {name: "LAD_SD", effect: "negative", delta: -0.24}
+                ],
+                habitat: "Paysages agricoles agrégés avec structures simples, évitant les lisières complexes."
+            },
+            {
+                name: "Linotte mélodieuse",
+                prevalence: "21.6% (Commun)",
+                variables: 30,
+                auc: 0.769,
+                category: "common",
+                topVariables: [
+                    {name: "Pourcentage_Essence_Dominante", effect: "negative", delta: -0.443},
+                    {name: "Rumple_Index", effect: "negative", delta: -0.439},
+                    {name: "Forest_Edge_Density_per_m2", effect: "negative", delta: -0.427},
+                    {name: "Vegetation_Density_Ratio", effect: "negative", delta: -0.427},
+                    {name: "Canopy_Cover_Midstory_pct", effect: "negative", delta: -0.42}
+                ],
+                habitat: "Milieux ouverts avec végétation clairsemée et relief simple."
+            },
+            {
+                name: "Moineau domestique",
+                prevalence: "17.1% (Commun)",
+                variables: 9,
+                auc: 0.861,
+                category: "common",
+                topVariables: [
+                    {name: "Couverture_Agriculture_Extensive", effect: "positive", delta: 0.365},
+                    {name: "Indice_Mosaique_Agricole", effect: "positive", delta: 0.363},
+                    {name: "Non.ligneux", effect: "positive", delta: 0.355},
+                    {name: "Couverture_Prairie", effect: "positive", delta: 0.344},
+                    {name: "Forest_Edge_Density_per_m2", effect: "negative", delta: -0.324}
+                ],
+                habitat: "Milieux agricoles extensifs et prairiaux, évitant les zones forestières."
+            },
+            {
+                name: "Pic vert",
+                prevalence: "23.1% (Commun)",
+                variables: 34,
+                auc: 0.623,
+                category: "common",
+                topVariables: [
+                    {name: "Epiceas", effect: "negative", delta: -0.228},
+                    {name: "Indice_Artificialisation", effect: "positive", delta: 0.21},
+                    {name: "Shannon_Habitat", effect: "positive", delta: 0.206},
+                    {name: "Couverture_Naturelle_Totale", effect: "negative", delta: -0.203},
+                    {name: "Indice_Naturalite", effect: "negative", delta: -0.203}
+                ],
+                habitat: "Milieux semi-naturels diversifiés, évitant les résineux et les zones très naturelles."
+            },
+            {
+                name: "Grive draine",
+                prevalence: "24.3% (Commun)",
+                variables: 27,
+                auc: 0.696,
+                category: "common",
+                topVariables: [
+                    {name: "Indice_Diversite_Shannon", effect: "positive", delta: 0.302},
+                    {name: "Indice_Uniformite_Simpson", effect: "positive", delta: 0.279},
+                    {name: "Pourcentage_Essence_Dominante", effect: "positive", delta: 0.275},
+                    {name: "Canopy_Cover_Canopy_pct", effect: "positive", delta: 0.271},
+                    {name: "CHM_Height_StdDev_m", effect: "positive", delta: 0.263}
+                ],
+                habitat: "Forêts diversifiées à canopée fermée avec structure hétérogène."
+            },
+            {
+                name: "Bruant jaune",
+                prevalence: "18.7% (Commun)",
+                variables: 22,
+                auc: 0.813,
+                category: "common",
+                topVariables: [
+                    {name: "Forest_Edge_Density_per_m2", effect: "negative", delta: -0.42},
+                    {name: "Indice_Mosaique_Agricole", effect: "positive", delta: 0.405},
+                    {name: "Vegetation_Density_Ratio", effect: "negative", delta: -0.393},
+                    {name: "LAD_SD", effect: "negative", delta: -0.37},
+                    {name: "CHM_Height_CoeffVar_pct", effect: "positive", delta: 0.366}
+                ],
+                habitat: "Mosaïques agricoles avec végétation clairsemée, évitant les forêts."
+            },
+            {
+                name: "Fauvette des jardins",
+                prevalence: "20.2% (Commun)",
+                variables: 27,
+                auc: 0.603,
+                category: "common",
+                topVariables: [
+                    {name: "Understory_Structural_Complexity", effect: "negative", delta: -0.198},
+                    {name: "CHM_Height_Range_m", effect: "negative", delta: -0.15},
+                    {name: "Couverture_Zones_Naturelles_Totale", effect: "positive", delta: 0.15},
+                    {name: "Couverture_Agriculture_Totale", effect: "negative", delta: -0.131},
+                    {name: "Couverture_Naturelle_Totale", effect: "positive", delta: 0.125}
+                ],
+                habitat: "Zones naturelles avec structure simple, évitant les milieux agricoles."
+            },
+            {
+                name: "Hirondelle rustique",
+                prevalence: "15.5% (Commun)",
+                variables: 27,
+                auc: 0.830,
+                category: "common",
+                topVariables: [
+                    {name: "Forest_Edge_Density_per_m2", effect: "negative", delta: -0.385},
+                    {name: "CHM_Height_StdDev_m", effect: "negative", delta: -0.359},
+                    {name: "Rumple_Index", effect: "negative", delta: -0.359},
+                    {name: "Pourcentage_Essence_Dominante", effect: "negative", delta: -0.347},
+                    {name: "Indice_Mosaique_Agricole", effect: "positive", delta: 0.344}
+                ],
+                habitat: "Milieux agricoles ouverts et plats, évitant les zones forestières."
+            },
+            // ESPÈCES RARES
+            {
+                name: "Choucas des tours",
+                prevalence: "14.4% (Rare)",
+                variables: 14,
+                auc: 0.734,
+                category: "rare",
+                topVariables: [
+                    {name: "Couverture_Naturelle_Totale", effect: "negative", delta: -0.302},
+                    {name: "Indice_Naturalite", effect: "negative", delta: -0.302},
+                    {name: "Couverture_Agriculture_Totale", effect: "positive", delta: 0.268},
+                    {name: "Couverture_Agriculture_Intensive", effect: "positive", delta: 0.264},
+                    {name: "Indice_Artificialisation", effect: "positive", delta: 0.263}
+                ],
+                habitat: "Milieux agricoles intensifs et artificialisés, évitant les zones naturelles."
+            },
+            {
+                name: "Alouette des champs",
+                prevalence: "13.4% (Rare)",
+                variables: 15,
+                auc: 0.886,
+                category: "rare",
+                topVariables: [
+                    {name: "Vegetation_Density_Ratio", effect: "negative", delta: -0.424},
+                    {name: "Return_Density_Midstory_per_m2", effect: "negative", delta: -0.412},
+                    {name: "Indice_Mosaique_Agricole", effect: "positive", delta: 0.389},
+                    {name: "Pourcentage_Essence_Dominante", effect: "negative", delta: -0.385},
+                    {name: "CHM_Height_CoeffVar_pct", effect: "positive", delta: 0.382}
+                ],
+                habitat: "Milieux agricoles ouverts avec végétation rase et hétérogène."
+            },
+            {
+                name: "Verdier d'Europe",
+                prevalence: "14% (Rare)",
+                variables: 2,
+                auc: 0.772,
+                category: "rare",
+                topVariables: [
+                    {name: "Couverture_Residentiel_Totale", effect: "positive", delta: 0.25},
+                    {name: "Indice_Mosaique_Agricole", effect: "positive", delta: 0.221}
+                ],
+                habitat: "Milieux résidentiels et agricoles."
+            },
+            {
+                name: "Rouge-queue noir",
+                prevalence: "10.9% (Rare)",
+                variables: 14,
+                auc: 0.705,
+                category: "rare",
+                topVariables: [
+                    {name: "Couverture_Prairie", effect: "positive", delta: 0.213},
+                    {name: "Couverture_Agriculture_Extensive", effect: "positive", delta: 0.203},
+                    {name: "Non.ligneux", effect: "positive", delta: 0.195},
+                    {name: "Couverture_Forestiere_Totale", effect: "negative", delta: -0.176},
+                    {name: "Couverture_Foret_Sylviculture", effect: "negative", delta: -0.176}
+                ],
+                habitat: "Milieux prairiaux et agricoles extensifs, évitant les zones forestières."
+            },
+            {
+                name: "Roitelet à triple bandeau",
+                prevalence: "13.5% (Rare)",
+                variables: 14,
+                auc: 0.769,
+                category: "rare",
+                topVariables: [
+                    {name: "Indice_Diversite_Shannon", effect: "positive", delta: 0.324},
+                    {name: "LiDAR_Penetration_Ratio", effect: "negative", delta: -0.305},
+                    {name: "Indice_Diversite_Simpson", effect: "positive", delta: 0.305},
+                    {name: "Indice_Diversite_Simpson_Modifie", effect: "positive", delta: 0.305},
+                    {name: "Indice_Uniformite_Simpson", effect: "positive", delta: 0.294}
+                ],
+                habitat: "Forêts diversifiées à canopée fermée avec forte diversité spécifique."
+            },
+            {
+                name: "Canard colvert",
+                prevalence: "12.8% (Rare)",
+                variables: 10,
+                auc: 0.678,
+                category: "rare",
+                topVariables: [
+                    {name: "Couverture_Usage_Inconnu_Total", effect: "positive", delta: 0.221},
+                    {name: "Peupliers", effect: "positive", delta: 0.197},
+                    {name: "Shannon_Habitat", effect: "positive", delta: 0.191},
+                    {name: "Gap_Fraction_Ratio", effect: "positive", delta: 0.183},
+                    {name: "Canopy_Openness_pct", effect: "positive", delta: 0.17}
+                ],
+                habitat: "Zones humides avec peupliers et milieux ouverts diversifiés."
+            },
+            {
+                name: "Mésange noire",
+                prevalence: "12.2% (Rare)",
+                variables: 15,
+                auc: 0.777,
+                category: "rare",
+                topVariables: [
+                    {name: "Epiceas", effect: "positive", delta: 0.316},
+                    {name: "LiDAR_Penetration_Ratio", effect: "negative", delta: -0.29},
+                    {name: "Return_Density_Midstory_per_m2", effect: "positive", delta: 0.29},
+                    {name: "Couverture_Forestiere_Totale", effect: "positive", delta: 0.279},
+                    {name: "Couverture_Foret_Sylviculture", effect: "positive", delta: 0.279}
+                ],
+                habitat: "Forêts de résineux (épicéas) denses avec strate moyenne développée."
+            },
+            {
+                name: "Coucou gris",
+                prevalence: "13.5% (Rare)",
+                variables: 13,
+                auc: 0.588,
+                category: "rare",
+                topVariables: [
+                    {name: "Couverture_Naturelle_Totale", effect: "positive", delta: 0.213},
+                    {name: "Indice_Naturalite", effect: "positive", delta: 0.213},
+                    {name: "Indice_Artificialisation", effect: "negative", delta: -0.195},
+                    {name: "Couverture_Anthropique_Total", effect: "negative", delta: -0.172},
+                    {name: "Indice_Pression_Urbaine", effect: "negative", delta: -0.172}
+                ],
+                habitat: "Milieux naturels préservés, évitant les zones anthropisées."
+            },
+            {
+                name: "Roitelet huppé",
+                prevalence: "11.9% (Rare)",
+                variables: 15,
+                auc: 0.737,
+                category: "rare",
+                topVariables: [
+                    {name: "LiDAR_Penetration_Ratio", effect: "negative", delta: -0.248},
+                    {name: "Gap_Fraction_Ratio", effect: "negative", delta: -0.24},
+                    {name: "Vegetation_Density_Ratio", effect: "positive", delta: 0.237},
+                    {name: "Return_Density_Canopy_per_m2", effect: "positive", delta: 0.233},
+                    {name: "Epiceas", effect: "positive", delta: 0.229}
+                ],
+                habitat: "Forêts de résineux denses à canopée fermée, évitant les milieux ouverts."
+            },
+            {
+                name: "Mésange nonnette",
+                prevalence: "12.4% (Rare)",
+                variables: 4,
+                auc: 0.734,
+                category: "rare",
+                topVariables: [
+                    {name: "Canopy_Cover_Canopy_pct", effect: "positive", delta: 0.248},
+                    {name: "CHM_Height_StdDev_m", effect: "positive", delta: 0.24},
+                    {name: "LiDAR_Penetration_Ratio", effect: "negative", delta: -0.24},
+                    {name: "Return_Density_Canopy_per_m2", effect: "positive", delta: 0.225}
+                ],
+                habitat: "Forêts denses à canopée fermée avec structure hétérogène."
+            },
+            {
+                name: "Héron cendré",
+                prevalence: "9.6% (Rare)",
+                variables: 14,
+                auc: 0.690,
+                category: "rare",
+                topVariables: [
+                    {name: "Couverture_Anthropique_Total", effect: "positive", delta: 0.168},
+                    {name: "Indice_Pression_Urbaine", effect: "positive", delta: 0.168},
+                    {name: "Shannon_Habitat", effect: "positive", delta: 0.156},
+                    {name: "Couverture_Naturelle_Totale", effect: "negative", delta: -0.145},
+                    {name: "Indice_Naturalite", effect: "negative", delta: -0.145}
+                ],
+                habitat: "Milieux aquatiques anthropisés avec diversité d'habitats."
+            },
+            {
+                name: "Faucon crécerelle",
+                prevalence: "8.4% (Rare)",
+                variables: 3,
+                auc: 0.760,
+                category: "rare",
+                topVariables: [
+                    {name: "Canopy_Cover_Midstory_pct", effect: "negative", delta: -0.206},
+                    {name: "Gap_Fraction_Ratio", effect: "positive", delta: 0.198},
+                    {name: "Indice_Mosaique_Agricole", effect: "positive", delta: 0.198}
+                ],
+                habitat: "Milieux agricoles ouverts avec trouées, évitant les strates arbustives."
+            },
+            {
+                name: "Bernache du Canada",
+                prevalence: "9.9% (Rare)",
+                variables: 15,
+                auc: 0.583,
+                category: "rare",
+                topVariables: [
+                    {name: "Couverture_Anthropique_Total", effect: "positive", delta: 0.122},
+                    {name: "Indice_Pression_Urbaine", effect: "positive", delta: 0.122},
+                    {name: "Couverture_Usage_Inconnu_Total", effect: "positive", delta: 0.118},
+                    {name: "Couverture_Naturelle_Totale", effect: "negative", delta: -0.115},
+                    {name: "Indice_Naturalite", effect: "negative", delta: -0.115}
+                ],
+                habitat: "Zones aquatiques anthropisées, évitant les milieux naturels."
+            },
+            {
+                name: "Martinet noir",
+                prevalence: "8.8% (Rare)",
+                variables: 13,
+                auc: 0.596,
+                category: "rare",
+                topVariables: [
+                    {name: "Couverture_Anthropique_Total", effect: "positive", delta: 0.164},
+                    {name: "Indice_Pression_Urbaine", effect: "positive", delta: 0.164},
+                    {name: "Indice_Artificialisation", effect: "positive", delta: 0.153},
+                    {name: "Shannon_Habitat", effect: "positive", delta: 0.137},
+                    {name: "Couverture_Foret_Sylviculture", effect: "negative", delta: -0.118}
+                ],
+                habitat: "Milieux urbains et anthropisés diversifiés, évitant les forêts."
+            },
+            {
+                name: "Tarier pâtre",
+                prevalence: "9.3% (Rare)",
+                variables: 10,
+                auc: 0.797,
+                category: "rare",
+                topVariables: [
+                    {name: "Hauteur_Max", effect: "negative", delta: -0.187},
+                    {name: "Autres", effect: "negative", delta: -0.179},
+                    {name: "Hauteur_P95", effect: "negative", delta: -0.175},
+                    {name: "Couverture_Naturelle_Totale", effect: "positive", delta: 0.167},
+                    {name: "Indice_Naturalite", effect: "positive", delta: 0.167}
+                ],
+                habitat: "Milieux naturels ouverts avec végétation basse et homogène."
+            },
+            // ESPÈCES TRÈS RARES
+            {
+                name: "Bergeronnette printanière",
+                prevalence: "4.2% (Très rare)",
+                variables: 3,
+                auc: 0.903,
+                category: "very-rare",
+                topVariables: [
+                    {name: "Return_Density_Midstory_per_m2", effect: "negative", delta: -0.149},
+                    {name: "Couverture_Agriculture_Totale", effect: "positive", delta: 0.134},
+                    {name: "Couverture_Agriculture_Intensive", effect: "positive", delta: 0.132}
+                ],
+                habitat: "Milieux agricoles intensifs ouverts sans strate arbustive."
+            },
+            {
+                name: "Hirondelle de fenêtre",
+                prevalence: "4% (Très rare)",
+                variables: 3,
+                auc: 0.765,
+                category: "very-rare",
+                topVariables: [
+                    {name: "Forest_Edge_Density_per_m2", effect: "negative", delta: -0.092},
+                    {name: "Couverture_Anthropique_Total", effect: "positive", delta: 0.088},
+                    {name: "Shannon_Habitat", effect: "positive", delta: 0.065}
+                ],
+                habitat: "Milieux urbains diversifiés, évitant les zones forestières."
+            },
+            {
+                name: "Rousserolle verderolle",
+                prevalence: "3.4% (Très rare)",
+                variables: 3,
+                auc: 0.986,
+                category: "very-rare",
+                topVariables: [
+                    {name: "Forest_Edge_Density_per_m2", effect: "negative", delta: -0.069},
+                    {name: "Rumple_Index", effect: "negative", delta: -0.061},
+                    {name: "LAD_Mean", effect: "negative", delta: -0.034}
+                ],
+                habitat: "Milieux humides ouverts avec végétation clairsemée et relief simple."
+            },
+            {
+                name: "Corbeau freux",
+                prevalence: "3.2% (Très rare)",
+                variables: 3,
+                auc: 0.497,
+                category: "very-rare",
+                topVariables: [
+                    {name: "Vegetation_Density_Ratio", effect: "negative", delta: -0.076},
+                    {name: "Couverture_Agriculture_Totale", effect: "positive", delta: 0.076},
+                    {name: "LAD_Max", effect: "negative", delta: -0.061}
+                ],
+                habitat: "Milieux agricoles ouverts avec végétation clairsemée."
+            },
+            {
+                name: "Vanneau huppé",
+                prevalence: "2.8% (Très rare)",
+                variables: 3,
+                auc: 0.887,
+                category: "very-rare",
+                topVariables: [
+                    {name: "Forest_Edge_Density_per_m2", effect: "negative", delta: -0.084},
+                    {name: "LAD_Max", effect: "negative", delta: -0.084},
+                    {name: "Couverture_Agriculture_Intensive", effect: "positive", delta: 0.053}
+                ],
+                habitat: "Milieux agricoles intensifs très ouverts, évitant toute végétation arbustive."
+            }
+        ];
+
+        function createSpeciesCard(species) {
+            const card = document.createElement('div');
+            card.className = 'species-card';
+            card.dataset.name = species.name.toLowerCase();
+            card.dataset.category = species.category;
+            
+            const variablesList = species.topVariables.map(variable => 
+                `<li class="variable-item">
+                    <span class="variable-name">${variable.name}</span>
+                    <span class="effect-${variable.effect}">
+                        ${variable.effect === 'positive' ? '+' : ''}${variable.delta.toFixed(3)}
+                    </span>
+                </li>`
+            ).join('');
+            
+            card.innerHTML = `
+                <div class="species-name">${species.name}</div>
+                <div class="species-info">
+                    <span class="prevalence">${species.prevalence}</span>
+                    <span>Variables: ${species.variables} | AUC: ${species.auc.toFixed(3)}</span>
+                </div>
+                <div>
+                    <strong>Variables importantes (Top 5):</strong>
+                    <ul class="variables-list">${variablesList}</ul>
+                </div>
+                <div class="habitat-description">
+                    <strong>Habitat:</strong> ${species.habitat}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function populateSpeciesGrid(species) {
+            const grid = document.getElementById('species-grid');
+            grid.innerHTML = '';
+            
+            species.forEach(sp => {
+                const card = createSpeciesCard(sp);
+                grid.appendChild(card);
+            });
+        }
+
+        function searchSpecies(query) {
+            const cards = document.querySelectorAll('.species-card');
+            const searchTerm = query.toLowerCase();
+            
+            cards.forEach(card => {
+                const speciesName = card.dataset.name;
+                const habitat = card.querySelector('.habitat-description').textContent.toLowerCase();
+                
+                if (speciesName.includes(searchTerm) || habitat.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function filterByPrevalence(category) {
+            const cards = document.querySelectorAll('.species-card');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            // Update active button
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            
+            const activeBtn = Array.from(filterBtns).find(btn => {
+                const btnText = btn.textContent.toLowerCase();
+                return (category === 'all' && btnText.includes('toutes')) ||
+                       (category === 'common' && btnText.includes('communes')) ||
+                       (category === 'rare' && btnText.includes('rares') && !btnText.includes('très')) ||
+                       (category === 'very-rare' && btnText.includes('très rares'));
+            });
+            
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+            
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            populateSpeciesGrid(speciesData);
+            
+            // Scroll to top button
+            window.addEventListener('scroll', function() {
+                const scrollBtn = document.querySelector('.scroll-to-top');
+                if (window.pageYOffset > 300) {
+                    scrollBtn.classList.add('visible');
+                } else {
+                    scrollBtn.classList.remove('visible');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
